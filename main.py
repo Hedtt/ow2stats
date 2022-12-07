@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QApplication, QLabel, QStyle
 from WidgetGallery import *
 from enums import Enum
 from game import *
+import version
 
 from player import *
 
@@ -30,6 +31,7 @@ sa = gspread.service_account(filename='uselessFolderINeedBecauseOfWindoof/creds.
 # wks = sh.worksheet('data')
 
 if __name__ == '__main__':
+    version.CheckVersion()
     app = QApplication([])
     app.setStyle('Fusion')
     palette = QPalette()
