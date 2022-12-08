@@ -29,23 +29,24 @@ class Result(Enum):
 
 class Map(Enum):
     class EscortMap(Enum):
-        Dorado = 1
-        Havana = 2
-        Junkertown = 3
-        Rialto = 4
-        Route = 5
-        Shambali = 6
-        Gibraltar = 7
+        CircuitRoayal = 1
+        Dorado = 2
+        Havana = 3
+        Junkertown = 4
+        Rialto = 5
+        Route = 6
+        Shambali = 7
+        Gibraltar = 8
 
     class HybridMap(Enum):
         BlizzardWorld = 1
         Eichenwalde = 2
         Hollywood = 3
         KingsRow = 4
-        NYC = 5
+        Midtown = 5
         Numbani = 6
-        RioDeJaneiro = 7
-        Paraiso = 8
+        Paraiso = 7
+        RioDeJaneiro = 8
 
     class KothMap(Enum):
         Busan = 1
@@ -55,6 +56,6 @@ class Map(Enum):
         Oasis = 5
 
     class PushMap(Enum):
-        Esperanca = 1
-        Rome = 2
-        Toronto = 3
+        Colosseo = 1
+        Esperanca = 2
+        NewQueenStreet = 3
