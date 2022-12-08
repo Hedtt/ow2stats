@@ -102,9 +102,6 @@ class WidgetGallery(QDialog):
         self.supportRoleImage.setVisible(False)
 
         self.checkGroupRoleQueue.setExclusive(False)
-        # if self.checkGroupRoleQueue.checkedButton() is not None:
-        #     for button in self.checkGroupRoleQueue.checkedButton():
-        #         button.setChecked(False)
         for button in self.checkGroupRoleQueue.buttons():
             button.setChecked(False)
         self.game.roleQueue = []
@@ -200,10 +197,13 @@ class WidgetGallery(QDialog):
 
         checkButtonQueuedTank = QCheckBox('Tank')
         checkButtonQueuedTank.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Tank))
+        # checkButtonQueuedTank.stateChanged.connect(lambda: self.roleQueuedChanged(Role.Tank))
         checkButtonQueuedDps = QCheckBox('Dps')
         checkButtonQueuedDps.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Dps))
+        # checkButtonQueuedDps.stateChanged.connect(lambda: self.roleQueuedChanged(Role.Dps))
         checkButtonQueuedSupport = QCheckBox('Support')
         checkButtonQueuedSupport.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Support))
+        # checkButtonQueuedSupport.stateChanged.connect(lambda: self.roleQueuedChanged(Role.Support))
 
         self.checkGroupRoleQueue.addButton(checkButtonQueuedTank)
         self.checkGroupRoleQueue.addButton(checkButtonQueuedDps)
