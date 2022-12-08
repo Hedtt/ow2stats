@@ -294,7 +294,10 @@ class WidgetGallery(QDialog):
 
     def modePush_clicked(self):
         self.modeGroupBox.setVisible(False)
+        self.teamGroupBox.setVisible(False)
+        self.game.teamChosen(Team.NoTeam)
         self.pushMapsBox.setVisible(True)
+        self.resultDraw.setVisible(True)
 
     def createTeamGroupBox(self):
         teamButtonAttack = QRadioButton('Attack')
@@ -378,7 +381,7 @@ class WidgetGallery(QDialog):
         mapButtonKingsRow = QRadioButton('King\'s Row')
         mapButtonKingsRow.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.KingsRow))
         mapButtonNewYork = QRadioButton('New York City')
-        mapButtonNewYork.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.NYC))
+        mapButtonNewYork.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.Midtown))
         mapButtonNumbani = QRadioButton('Numbani')
         mapButtonNumbani.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.Numbani))
         mapButtonParaiso = QRadioButton('Paraiso')
@@ -446,9 +449,9 @@ class WidgetGallery(QDialog):
         mapButtonEsperanca = QRadioButton('Esperanca')
         mapButtonEsperanca.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.Esperanca))
         mapButtonRome = QRadioButton('Rome')
-        mapButtonRome.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.Rome))
+        mapButtonRome.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.Colosseo))
         mapButtonToronto = QRadioButton('Toronto')
-        mapButtonToronto.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.Toronto))
+        mapButtonToronto.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.NewQueenStreet))
 
         self.radioPushGroup.addButton(mapButtonEsperanca)
         self.radioPushGroup.addButton(mapButtonRome)
@@ -605,6 +608,9 @@ class WidgetGallery(QDialog):
         self.ownVoicechat.clear()
         self.ownVoicechat.addItems(map(str, range(0, groupSize + 1)))
         self.ownVoicechat.setCurrentIndex(groupSize)
+        self.voiceCombo.clear()
+        self.voiceCombo.addItems(map(str, range(groupSize, 6)))
+        self.voiceCombo.setCurrentIndex(0)
 
     def openLastClicked(self, confirmed: bool):
         if not confirmed:
