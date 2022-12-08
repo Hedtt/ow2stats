@@ -15,7 +15,7 @@ def UpdateApplication():
     f = urllib.request.urlopen(url)
     file = f.read()
     f.close()
-    f2 = open('mysetup.exe', 'wb')
+    f2 = open('setup//Output/ow2stats_setup.exe', 'wb')
     f2.write(file)
     f2.close()
     subprocess.call('mysetup.exe')
