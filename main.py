@@ -31,7 +31,7 @@ sa = gspread.service_account(filename='uselessFolderINeedBecauseOfWindoof/creds.
 # wks = sh.worksheet('data')
 
 if __name__ == '__main__':
-    version.CheckVersion()
+    # version.CheckVersion()
     app = QApplication([])
     app.setStyle('Fusion')
     palette = QPalette()
