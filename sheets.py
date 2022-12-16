@@ -48,7 +48,7 @@ class GDoc:
         gameArray = [game.player.username, game.player.socketName, str(game.date), game.groupSize, game.role.name,
                      ''.join(game.roleQueue), game.gameMode.name, game.mapPlayed.name, game.team.name, game.voice,
                      game.ownVoice, game.result.name, game.comment]
-        self.sheet.insert_row(gameArray, 2)
+        # self.sheet.insert_row(gameArray, 2)
 
     def openLastGame(self):
         game = self.openGame(2)
