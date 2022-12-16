@@ -45,8 +45,9 @@ class GDoc:
         return game
 
     def addGame(self, game):
+        role_queued = ''.join(list(map(lambda x: x.name[0], game.roleQueue)))
         gameArray = [game.player.username, game.player.socketName, str(game.date), game.groupSize, game.role.name,
-                     ''.join(game.roleQueue), game.gameMode.name, game.mapPlayed.name, game.team.name, game.voice,
+                     role_queued, game.gameMode.name, game.mapPlayed.name, game.team.name, game.voice,
                      game.ownVoice, game.result.name, game.comment]
         # self.sheet.insert_row(gameArray, 2)
 

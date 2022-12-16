@@ -6,7 +6,7 @@ from player import *
 class Game:
     def __init__(self):
         self.role = None
-        self.roleQueue = None
+        self.roleQueue = []
         self.player = None
         self.date = datetime.date.today()
         self.groupSize = 1
@@ -66,4 +66,7 @@ class Game:
         self.resultIsChosen = True
 
     def gameValid(self) -> bool:
-        return self.roleIsChosen and self.mapIsSelected and self.teamIsChosen and self.resultIsChosen is True
+        role_played_is_in_role_queued = True
+        if len(self.roleQueue) > 0:
+            role_played_is_in_role_queued = self.role in self.roleQueue
+        return self.roleIsChosen and role_played_is_in_role_queued and self.mapIsSelected and self.teamIsChosen and self.resultIsChosen is True
