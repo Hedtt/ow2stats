@@ -29,26 +29,24 @@ class Game:
         else:
             self.date = date
 
-    def groupSizeChanged(self, groupsize: int):
-        self.groupSize = groupsize
+    def groupSizeChanged(self, group_size: int):
+        self.groupSize = group_size
 
     def roleChosen(self, role: Role):
         self.role = role
         self.roleIsChosen = True
 
     def roleQueuedChanged(self, role: Role):
-        text = role.name[0]
-        if self.roleQueue is not None:
-            if text in self.roleQueue:
-                self.roleQueue.remove(text)
-            else:
-                self.roleQueue.append(text)
+        if role not in self.roleQueue:
+            self.roleQueue.append(role)
+        else:
+            self.roleQueue.remove(role)
 
-    def gameModeChosen(self, gameMode: GameMode):
-        self.gameMode = gameMode
+    def gameModeChosen(self, game_mode: GameMode):
+        self.gameMode = game_mode
 
-    def mapChosen(self, mapPlayed):
-        self.mapPlayed = mapPlayed
+    def mapChosen(self, map_played):
+        self.mapPlayed = map_played
         self.mapIsSelected = True
 
     def teamChosen(self, team: Team):
@@ -58,8 +56,8 @@ class Game:
     def voiceChanged(self, voice: int):
         self.voice = voice
 
-    def ownVoiceChanged(self, ownVoice: int):
-        self.ownVoice = ownVoice
+    def ownVoiceChanged(self, own_voice: int):
+        self.ownVoice = own_voice
 
     def resultChanged(self, result: Result):
         self.result = result
