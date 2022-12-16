@@ -15,6 +15,10 @@ class WidgetGallery(QDialog):
     def __init__(self, parent=None):
         super(WidgetGallery, self).__init__(parent)
 
+        self.openLastConfirm = AreYouSure(self)
+        self.errorUsername = InvalidUserName()
+        self.resultDefeat = QPushButton()
+        self.resultVictory = QPushButton()
         self.modeButtonPush = QPushButton('Push')
         self.modeButtonKoth = QPushButton('Koth')
         self.modeButtonHybrid = QPushButton('Hybrid')
@@ -416,55 +420,55 @@ class WidgetGallery(QDialog):
         map_selection_back = QPushButton('Back to Mode select')
         map_selection_back.clicked.connect(self.mapSelect_back)
 
-        mapButtonBusan = QRadioButton('Busan')
-        mapButtonBusan.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Busan))
-        mapButtonIlios = QRadioButton('Ilios')
-        mapButtonIlios.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Ilios))
-        mapButtonLijiang = QRadioButton('Lijiang Tower')
-        mapButtonLijiang.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Lijiang))
-        mapButtonNepal = QRadioButton('Nepal')
-        mapButtonNepal.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Nepal))
-        mapButtonOasis = QRadioButton('Oasis')
-        mapButtonOasis.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Oasis))
+        map_button_busan = QRadioButton('Busan')
+        map_button_busan.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Busan))
+        map_button_ilios = QRadioButton('Ilios')
+        map_button_ilios.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Ilios))
+        map_button_lijiang = QRadioButton('Lijiang Tower')
+        map_button_lijiang.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Lijiang))
+        map_button_nepal = QRadioButton('Nepal')
+        map_button_nepal.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Nepal))
+        map_button_oasis = QRadioButton('Oasis')
+        map_button_oasis.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Oasis))
 
-        self.radioKothGroup.addButton(mapButtonBusan)
-        self.radioKothGroup.addButton(mapButtonIlios)
-        self.radioKothGroup.addButton(mapButtonLijiang)
-        self.radioKothGroup.addButton(mapButtonNepal)
-        self.radioKothGroup.addButton(mapButtonOasis)
+        self.radioKothGroup.addButton(map_button_busan)
+        self.radioKothGroup.addButton(map_button_ilios)
+        self.radioKothGroup.addButton(map_button_lijiang)
+        self.radioKothGroup.addButton(map_button_nepal)
+        self.radioKothGroup.addButton(map_button_oasis)
 
-        kothLayout = QVBoxLayout()
-        kothLayout.addWidget(map_selection_back)
-        kothLayout.addWidget(mapButtonBusan)
-        kothLayout.addWidget(mapButtonIlios)
-        kothLayout.addWidget(mapButtonLijiang)
-        kothLayout.addWidget(mapButtonNepal)
-        kothLayout.addWidget(mapButtonOasis)
+        koth_layout = QVBoxLayout()
+        koth_layout.addWidget(map_selection_back)
+        koth_layout.addWidget(map_button_busan)
+        koth_layout.addWidget(map_button_ilios)
+        koth_layout.addWidget(map_button_lijiang)
+        koth_layout.addWidget(map_button_nepal)
+        koth_layout.addWidget(map_button_oasis)
 
-        self.kothMapsBox.setLayout(kothLayout)
+        self.kothMapsBox.setLayout(koth_layout)
 
     def createPushMapsBox(self):
-        mapSelectionBack = QPushButton('Back to Mode select')
-        mapSelectionBack.clicked.connect(self.mapSelect_back)
+        map_selection_back = QPushButton('Back to Mode select')
+        map_selection_back.clicked.connect(self.mapSelect_back)
 
-        mapButtonEsperanca = QRadioButton('Esperanca')
-        mapButtonEsperanca.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.Esperanca))
-        mapButtonRome = QRadioButton('Rome')
-        mapButtonRome.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.Colosseo))
-        mapButtonToronto = QRadioButton('Toronto')
-        mapButtonToronto.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.NewQueenStreet))
+        map_button_esperanca = QRadioButton('Esperanca')
+        map_button_esperanca.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.Esperanca))
+        map_button_rome = QRadioButton('Rome')
+        map_button_rome.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.Colosseo))
+        map_button_toronto = QRadioButton('Toronto')
+        map_button_toronto.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.NewQueenStreet))
 
-        self.radioPushGroup.addButton(mapButtonEsperanca)
-        self.radioPushGroup.addButton(mapButtonRome)
-        self.radioPushGroup.addButton(mapButtonToronto)
+        self.radioPushGroup.addButton(map_button_esperanca)
+        self.radioPushGroup.addButton(map_button_rome)
+        self.radioPushGroup.addButton(map_button_toronto)
 
-        pushLayout = QVBoxLayout()
-        pushLayout.addWidget(mapSelectionBack)
-        pushLayout.addWidget(mapButtonToronto)
-        pushLayout.addWidget(mapButtonEsperanca)
-        pushLayout.addWidget(mapButtonRome)
+        push_layout = QVBoxLayout()
+        push_layout.addWidget(map_selection_back)
+        push_layout.addWidget(map_button_toronto)
+        push_layout.addWidget(map_button_esperanca)
+        push_layout.addWidget(map_button_rome)
 
-        self.pushMapsBox.setLayout(pushLayout)
+        self.pushMapsBox.setLayout(push_layout)
 
     def mapSelect_back(self):
         # Button reset
@@ -499,14 +503,14 @@ class WidgetGallery(QDialog):
             self.resultDraw.setVisible(True)
 
     def createSocialGroupBox(self):
-        voiceComboStr = QLabel('# in vc')
-        voiceComboStr.setToolTip('How many people are in the team voicechat (including you and your group)?')
+        voice_combo_str = QLabel('# in vc')
+        voice_combo_str.setToolTip('How many people are in the team voicechat (including you and your group)?')
         self.voiceCombo.addItems(map(str, range(0, 6)))
         self.voiceCombo.currentIndexChanged.connect(lambda: self.game.voiceChanged(self.voiceCombo.currentText()))
 
         layout = QHBoxLayout()
         layout.addStretch()
-        layout.addWidget(voiceComboStr)
+        layout.addWidget(voice_combo_str)
         layout.addWidget(self.voiceCombo)
         layout.addStretch()
         layout.addWidget(QLabel('Comment:'))
@@ -516,11 +520,9 @@ class WidgetGallery(QDialog):
         self.socialGroupBox.setLayout(layout)
 
     def createResultBox(self):
-        self.resultVictory = QPushButton()
         self.resultVictory.clicked.connect(lambda: self.game.resultChanged(Result.Victory))
         self.resultVictory.setIcon(QtGui.QIcon('pictures/victory_transparent.png'))
         self.resultVictory.setIconSize(QtCore.QSize(100, 40))
-        self.resultDefeat = QPushButton()
         self.resultDefeat.clicked.connect(lambda: self.game.resultChanged(Result.Defeat))
         self.resultDefeat.setIcon(QtGui.QIcon('pictures/defeat_transparent.png'))
         self.resultDefeat.setIconSize(QtCore.QSize(100, 40))
@@ -542,12 +544,12 @@ class WidgetGallery(QDialog):
     def createSubmitBox(self):
         submit = QPushButton('Submit')
         submit.clicked.connect(self.submitClicked)
-        openLastGame = QPushButton('Open last game')
-        openLastGame.clicked.connect(lambda: self.openLastClicked(False))
+        open_last_game = QPushButton('Open last game')
+        open_last_game.clicked.connect(lambda: self.openLastClicked(False))
 
         layout = QHBoxLayout()
         layout.addStretch()
-        layout.addWidget(openLastGame)
+        layout.addWidget(open_last_game)
         layout.addStretch()
         layout.addWidget(submit)
         layout.addStretch()
@@ -569,13 +571,12 @@ class WidgetGallery(QDialog):
         self.mainScreen.adjustSize()
 
     def startTracking(self):
-        playerName = str.strip(self.player.text())
-        if re.search(r'\S', playerName):
-            self.game.player = Player(playerName)
+        player_name = str.strip(self.player.text())
+        if re.search(r'\S', player_name):
+            self.game.player = Player(player_name)
             self.currentPlayer = self.game.player
             self.setToStatsScreen()
         else:
-            self.errorUsername = InvalidUserName()
             self.errorUsername.show()
 
     def chooseRole(self, role: str):
@@ -605,17 +606,16 @@ class WidgetGallery(QDialog):
         self.error = ErrorWindow()
         self.error.show()
 
-    def groupSizeChanged(self, groupSize: int):
+    def groupSizeChanged(self, group_size: int):
         self.ownVoicechat.clear()
-        self.ownVoicechat.addItems(map(str, range(0, groupSize + 1)))
-        self.ownVoicechat.setCurrentIndex(groupSize)
+        self.ownVoicechat.addItems(map(str, range(0, group_size + 1)))
+        self.ownVoicechat.setCurrentIndex(group_size)
         self.voiceCombo.clear()
-        self.voiceCombo.addItems(map(str, range(groupSize, 6)))
+        self.voiceCombo.addItems(map(str, range(group_size, 6)))
         self.voiceCombo.setCurrentIndex(0)
 
     def openLastClicked(self, confirmed: bool):
         if not confirmed:
-            self.openLastConfirm = AreYouSure(self)
             self.openLastConfirm.show()
         else:
             self.initialize()
@@ -633,7 +633,7 @@ class WidgetGallery(QDialog):
             elif game.role == 'Support':
                 self.radioGroupRole.buttons()[2].click()
 
-            # Gamemode and Map
+            # Game mode and Map
             if game.gameMode == 'Escort':
                 self.modeButtonEscort.click()
                 for escortMap in self.radioEscortGroup.buttons():
@@ -683,7 +683,7 @@ class ErrorWindow(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
-        self.label = QLabel('Error, not all parameters were inputed')
+        self.label = QLabel('Error, not all parameters were inputted')
         self.redoButton = QPushButton('Input missing things')
         self.redoButton.clicked.connect(self.closeThis)
         layout.addStretch()
