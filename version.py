@@ -11,6 +11,7 @@ def CheckVersion():
 
 
 def UpdateApplication():
+    """TODO: fix broken url"""
     url = 'https://github.com/Hedtt/ow2stats/blob/main/setup/mysetup.exe?raw=true'
     f = urllib.request.urlopen(url)
     file = f.read()
