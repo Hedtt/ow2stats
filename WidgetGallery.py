@@ -329,7 +329,7 @@ class WidgetGallery(QDialog):
                 self.resultDraw.setVisible(True)
             return
         # comp is disabled
-        self.game.teamIsChosen = False
+        self.game.teamIsChosen.val = False
         self.teamGroupBox.setEnabled(True)
         if not self.kothMapsBox.isVisible():
             self.teamGroupBox.setHidden(False)
@@ -495,10 +495,10 @@ class WidgetGallery(QDialog):
         self.hybridMapsBox.setVisible(False)
         self.kothMapsBox.setVisible(False)
         self.pushMapsBox.setVisible(False)
-        self.game.mapIsSelected = False
+        self.game.mapIsSelected.val = False
         if not self.compPlaying.isChecked():
             self.teamGroupBox.setVisible(True)
-            self.game.teamIsChosen = False
+            self.game.teamIsChosen.val = False
         else:
             self.resultDraw.setVisible(True)
 
@@ -594,16 +594,20 @@ class WidgetGallery(QDialog):
             self.supportRoleImage.setVisible(True)
 
     def submitClicked(self):
-        if self.game.gameValid() is False:
-            self.errorWindow()
+        [valid, errors] = self.game.gameValid()
+        if valid is False:
+            str_of_errors = ""
+            for error in errors:
+                str_of_errors += error + "\n"
+            self.errorWindow(str_of_errors)
         else:
             self.game.comment = self.comment.text()
             self.doc.addGame(self.game)
             self.setToStatsScreen()
             self.initialize()
 
-    def errorWindow(self):
-        self.error = ErrorWindow()
+    def errorWindow(self, error_text: str):
+        self.error = ErrorWindow(error_text)
         self.error.show()
 
     def groupSizeChanged(self, group_size: int):
@@ -680,10 +684,10 @@ class WidgetGallery(QDialog):
 
 
 class ErrorWindow(QWidget):
-    def __init__(self):
+    def __init__(self, error_text: str):
         super().__init__()
         layout = QVBoxLayout()
-        self.label = QLabel('Error, not all parameters were inputted')
+        self.label = QLabel(error_text)
         self.redoButton = QPushButton('Input missing things')
         self.redoButton.clicked.connect(self.closeThis)
         layout.addStretch()
