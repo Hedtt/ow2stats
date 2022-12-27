@@ -11,7 +11,7 @@ def CheckVersion():
 
 
 def UpdateApplication():
-    url = 'https://github.com/Hedtt/ow2stats/blob/main/setup/mysetup.exe?raw=true'
+    url = 'https://github.com/Hedtt/ow2stats/blob/main/setup/Output/ow2stats_setup.exe?raw=true'
     f = urllib.request.urlopen(url)
     file = f.read()
     f.close()
