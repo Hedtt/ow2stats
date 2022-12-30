@@ -45,13 +45,12 @@ class GDoc:
 
         return game
 
-    @staticmethod
-    def addGame(game):
+    def addGame(self, game):
         role_queued = ''.join(list(map(lambda x: x.name[0], game.roleQueue)))
         game_array = [game.player.username, game.player.socketName, str(game.date), game.groupSize, game.role.name,
                       role_queued, game.gameMode.name, game.mapPlayed.name, game.team.name, game.voice,
                       game.ownVoice, game.result.name, game.comment]
-        # self.sheet.insert_row(game_array, 2)
+        self.sheet.insert_row(game_array, 2)
 
     def openLastGame(self):
         game = self.openGame(2)
