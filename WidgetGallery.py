@@ -172,6 +172,8 @@ class WidgetGallery(QDialog):
         self.ownVoicechat.addItems(map(str, range(0, 6)))
         self.ownVoicechat.currentIndexChanged.connect(
             lambda: self.game.ownVoiceChanged(self.ownVoicechat.currentText()))
+        self.ownVoicechat.currentIndexChanged.connect(
+            lambda: self.ownVoiceChanged(self.ownVoicechat.currentText()))
         self.compPlaying.stateChanged.connect(self.comp_clicked)
 
         layout = QHBoxLayout()
@@ -617,6 +619,11 @@ class WidgetGallery(QDialog):
         self.voiceCombo.clear()
         self.voiceCombo.addItems(map(str, range(group_size, 6)))
         self.voiceCombo.setCurrentIndex(0)
+
+    def ownVoiceChanged(self, own_voice: str):
+        self.voiceCombo.clear()
+        if own_voice != "":
+            self.voiceCombo.addItems(map(str,range(int(own_voice), 6)))
 
     def openLastClicked(self, confirmed: bool):
         if not confirmed:
