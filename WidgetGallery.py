@@ -2,9 +2,9 @@ from PyQt5.QtCore import QObject, QDateTime, QDate
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit,
                              QDial, QDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit,
-                             QProgressBar, QPushButton, QRadioButton, QScrollBar, QSizePolicy,
+                             QMainWindow, QMenuBar, QProgressBar, QPushButton, QRadioButton, QScrollBar, QSizePolicy,
                              QSlider, QSpinBox, QStyleFactory, QTableWidget, QTabWidget, QTextEdit,
-                             QVBoxLayout, QWidget, QAbstractButton, QDateEdit, QButtonGroup)
+                             QVBoxLayout, QWidget, QAbstractButton, QDateEdit, QButtonGroup, QToolBar)
 import re
 from sheets import *
 from player import *
@@ -14,6 +14,13 @@ from game import *
 class WidgetGallery(QDialog):
     def __init__(self, parent=None):
         super(WidgetGallery, self).__init__(parent)
+
+        toolbar = QToolBar()
+        toolbar.addWidget(QLabel('Game'))
+        toolbar.addSeparator()
+        toolbar.addWidget(QLabel('Edit'))
+        toolbar.addSeparator()
+        toolbar.addWidget(QLabel('About'))
 
         self.openLastConfirm = AreYouSure(self)
         self.errorUsername = InvalidUserName()
@@ -92,11 +99,13 @@ class WidgetGallery(QDialog):
         main_layout.addWidget(self.socialGroupBox, 4, 0)
         main_layout.addWidget(self.resultBox, 5, 0)
         main_layout.addWidget(self.submitBox, 6, 0)
+        main_layout.setMenuBar(toolbar)
         self.setLayout(main_layout)
 
         self.initialize()
 
         self.setToStartScreen()
+
 
     def initialize(self):
         # create new game
