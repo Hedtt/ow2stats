@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit,
                              QDial, QDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit,
                              QMainWindow, QMenuBar, QProgressBar, QPushButton, QRadioButton, QScrollBar, QSizePolicy,
                              QSlider, QSpinBox, QStyleFactory, QTableWidget, QTabWidget, QTextEdit,
-                             QVBoxLayout, QWidget, QAbstractButton, QDateEdit, QButtonGroup, QToolBar)
+                             QVBoxLayout, QWidget, QAbstractButton, QDateEdit, QButtonGroup, QToolBar, QAction)
 import re
 from sheets import *
 from player import *
@@ -20,7 +20,12 @@ class WidgetGallery(QDialog):
         toolbar.addSeparator()
         toolbar.addWidget(QLabel('Edit'))
         toolbar.addSeparator()
-        toolbar.addWidget(QLabel('About'))
+        toolbar.addWidget(QPushButton('About'))
+
+        patch_notes_action = QAction("Patch Notes")
+        patch_notes_action.triggered.connect(self.showPatchNotes)
+        toolbar.addAction(patch_notes_action)
+
 
         self.openLastConfirm = AreYouSure(self)
         self.errorUsername = InvalidUserName()
@@ -154,6 +159,7 @@ class WidgetGallery(QDialog):
         self.socialGroupBox.setVisible(False)
         self.resultBox.setVisible(False)
         self.submitBox.setVisible(False)
+        self.layout().menuBar().setVisible(False)
         self.mainScreen.adjustSize()
 
     def setToStatsScreen(self):
@@ -165,6 +171,7 @@ class WidgetGallery(QDialog):
         self.socialGroupBox.setVisible(True)
         self.resultBox.setVisible(True)
         self.submitBox.setVisible(True)
+        self.layout().menuBar().setVisible(True)
 
     def createGeneralBox(self):
         self.dateEdit.setDate(QDate.currentDate())
@@ -698,6 +705,10 @@ class WidgetGallery(QDialog):
             elif game.result == 'Defeat':
                 self.resultDefeat.click()
 
+    def showPatchNotes(self):
+        self.patchNotes = PatchNotes()
+        self.patchNotes.show()
+
 
 class ErrorWindow(QWidget):
     def __init__(self, error_text: str):
@@ -761,3 +772,18 @@ class AreYouSure(QWidget):
 
     def closeThis(self):
         self.close()
+
+class PatchNotes(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.closeButton = QPushButton('Close')
+        self.closeButton.clicked.connect(self.closeThis)
+        layout.addStretch()
+        layout.addWidget(self.closeButton)
+        layout.addStretch()
+        self.setLayout(layout)
+
+    def closeThis(self):
+        self.close()
+
