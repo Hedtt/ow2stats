@@ -1,4 +1,6 @@
 import datetime
+from typing import List
+
 from enums import *
 from player import *
 from boolStrAttributes import BoolStrAttributes
@@ -64,7 +66,7 @@ class Game:
         self.result = result
         self.resultIsChosen.val = True
 
-    def gameValid(self) -> [bool, list[str]]:
+    def gameValid(self) -> [bool, List[str]]:
         errors = []
         role_played_is_in_role_queued = BoolStrAttributes('Role played is not in role queued!')
         if len(self.roleQueue) > 0:

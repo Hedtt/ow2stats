@@ -4,14 +4,15 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit,
                              QDial, QDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit,
                              QProgressBar, QPushButton, QRadioButton, QScrollBar, QSizePolicy,
                              QSlider, QSpinBox, QStyleFactory, QTableWidget, QTabWidget, QTextEdit,
-                             QVBoxLayout, QWidget, QAbstractButton, QDateEdit, QButtonGroup)
+                             QVBoxLayout, QWidget, QAbstractButton, QDateEdit, QButtonGroup, QMainWindow, QMenuBar,
+                             QDockWidget)
 import re
 from sheets import *
 from player import *
 from game import *
 
 
-class WidgetGallery(QDialog):
+class WidgetGallery(QMainWindow):
     def __init__(self, parent=None):
         super(WidgetGallery, self).__init__(parent)
 
@@ -79,7 +80,9 @@ class WidgetGallery(QDialog):
         self.createSubmitBox()
         self.createMainScreen()
 
-        main_layout = QGridLayout()
+
+        widget = QWidget(self)
+        main_layout = QGridLayout(widget)
         main_layout.addWidget(self.mainScreen, 0, 0)
         main_layout.addWidget(self.generalBox, 0, 0)
         main_layout.addWidget(self.roleGroupBox, 1, 0)
@@ -92,7 +95,9 @@ class WidgetGallery(QDialog):
         main_layout.addWidget(self.socialGroupBox, 4, 0)
         main_layout.addWidget(self.resultBox, 5, 0)
         main_layout.addWidget(self.submitBox, 6, 0)
-        self.setLayout(main_layout)
+        self.setCentralWidget(widget)
+        # self.setLayout(main_layout)
+
 
         self.initialize()
 

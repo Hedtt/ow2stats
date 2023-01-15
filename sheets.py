@@ -36,7 +36,10 @@ class GDoc:
         game.voice = game_list[9]
         game.ownVoice = game_list[10]
         game.result = game_list[11]
-        game.comment = game_list[12]
+        if len(game_list) > 12:
+            game.comment = game_list[12]
+        else:
+            game.comment = ""
 
         game.roleIsChosen = True
         game.mapIsSelected = True
