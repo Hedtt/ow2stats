@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit,
                              QProgressBar, QPushButton, QRadioButton, QScrollBar, QSizePolicy,
                              QSlider, QSpinBox, QStyleFactory, QTableWidget, QTabWidget, QTextEdit,
                              QVBoxLayout, QWidget, QAbstractButton, QDateEdit, QButtonGroup, QMainWindow, QMenuBar,
-                             QDockWidget)
+                             QDockWidget, QMenu, QAction)
 import re
 from sheets import *
 from player import *
@@ -80,6 +80,8 @@ class WidgetGallery(QMainWindow):
         self.createSubmitBox()
         self.createMainScreen()
 
+        self._createActions()
+        self._createMenuBar()
 
         widget = QWidget(self)
         main_layout = QGridLayout(widget)
@@ -102,6 +104,18 @@ class WidgetGallery(QMainWindow):
         self.initialize()
 
         self.setToStartScreen()
+
+
+    def _createActions(self):
+        self.patchNotesAction = QAction("Patch Notes", self)
+        self.helpAction = QAction("Help", self)
+    def _createMenuBar(self):
+        menuBar = self.menuBar()
+
+        gameMenu = menuBar.addMenu("Game")
+        aboutMenu = menuBar.addMenu("About")
+        aboutMenu.addAction(self.patchNotesAction)
+        aboutMenu.addAction(self.helpAction)
 
     def initialize(self):
         # create new game
@@ -152,6 +166,8 @@ class WidgetGallery(QMainWindow):
         self.submitBox.setVisible(False)
         self.mainScreen.adjustSize()
 
+        self.menuBar().setVisible(False)
+
     def setToStatsScreen(self):
         self.mainScreen.setVisible(False)
         self.generalBox.setVisible(True)
@@ -161,6 +177,8 @@ class WidgetGallery(QMainWindow):
         self.socialGroupBox.setVisible(True)
         self.resultBox.setVisible(True)
         self.submitBox.setVisible(True)
+
+        self.menuBar().setVisible(True)
 
     def createGeneralBox(self):
         self.dateEdit.setDate(QDate.currentDate())
