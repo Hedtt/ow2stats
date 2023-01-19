@@ -1,2 +1,4 @@
 0.0.2:
-implemented patch notes
+    -added toolbar
+        -added option in toolbar to delete current and open last game
+        -added patch notes
