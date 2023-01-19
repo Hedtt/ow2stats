@@ -15,6 +15,7 @@ from invalidUserName import InvalidUserName
 from errorWindow import ErrorWindow
 
 
+# noinspection PyUnresolvedReferences
 class WidgetGallery(QMainWindow):
     def __init__(self, parent=None):
         super(WidgetGallery, self).__init__(parent)
@@ -108,21 +109,27 @@ class WidgetGallery(QMainWindow):
         self.setToStartScreen()
 
     def _createActions(self):
+        """
+        create actions for the toolbar
+        """
         self.patchNotesAction = QAction("Patch Notes", self)
         self.helpAction = QAction("Help", self)
 
         self.delAction = QAction("Delete current game data", self)
         self.delAction.triggered.connect(self.initialize)
 
-        self.openlastAction = QAction("Open last game", self)
-        self.openlastAction.triggered.connect(lambda: self.openLastClicked(False))
+        self.openLastAction = QAction("Open last game", self)
+        self.openLastAction.triggered.connect(lambda: self.openLastClicked(False))
 
     def _createMenuBar(self):
+        """
+        create the menu bar and add the actions to the corresponding submenus
+        """
         menu_bar = self.menuBar()
 
         game_menu = menu_bar.addMenu("Game")
         game_menu.addAction(self.delAction)
-        game_menu.addAction(self.openlastAction)
+        game_menu.addAction(self.openLastAction)
 
         about_menu = menu_bar.addMenu("About")
         about_menu.addAction(self.patchNotesAction)
@@ -204,6 +211,7 @@ class WidgetGallery(QMainWindow):
         own_voicechat_str = QLabel('# Voicechat')
         own_voicechat_str.setToolTip('How many people of your group are in team voicechat?')
         self.ownVoicechat.addItems(map(str, range(0, 6)))
+        # noinspection PyUnresolvedReferences
         self.ownVoicechat.currentIndexChanged.connect(
             lambda: self.game.ownVoiceChanged(self.ownVoicechat.currentText()))
         self.ownVoicechat.currentIndexChanged.connect(
@@ -613,11 +621,11 @@ class WidgetGallery(QMainWindow):
             self.currentPlayer = self.game.player
             self.setToStatsScreen()
         else:
-            nameError = QMessageBox()
-            nameError.setText("Invalid username!")
-            nameError.setWindowTitle("Error!")
+            name_error = QMessageBox()
+            name_error.setText("Invalid username!")
+            name_error.setWindowTitle("Error!")
             # nameError.setStandardButtons(QMessageBox.Ok)
-            retval = nameError.exec_()
+            retval = name_error.exec_()
 
     def chooseRole(self, role: str):
         if role == 'Tank':
