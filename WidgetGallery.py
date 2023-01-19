@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit,
                              QProgressBar, QPushButton, QRadioButton, QScrollBar, QSizePolicy,
                              QSlider, QSpinBox, QStyleFactory, QTableWidget, QTabWidget, QTextEdit,
                              QVBoxLayout, QWidget, QAbstractButton, QDateEdit, QButtonGroup, QMainWindow, QMenuBar,
-                             QDockWidget, QMenu, QAction)
+                             QDockWidget, QMenu, QAction, QMessageBox)
 import re
 from sheets import *
 from player import *
@@ -611,7 +611,11 @@ class WidgetGallery(QMainWindow):
             self.currentPlayer = self.game.player
             self.setToStatsScreen()
         else:
-            self.errorUsername.show()
+            nameError = QMessageBox()
+            nameError.setText("Invalid username!")
+            nameError.setWindowTitle("Error!")
+            #nameError.setStandardButtons(QMessageBox.Ok)
+            retval = nameError.exec_()
 
     def chooseRole(self, role: str):
         if role == 'Tank':
