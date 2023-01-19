@@ -109,10 +109,19 @@ class WidgetGallery(QMainWindow):
     def _createActions(self):
         self.patchNotesAction = QAction("Patch Notes", self)
         self.helpAction = QAction("Help", self)
+
+        self.delAction = QAction("Delete current game data", self)
+        self.delAction.triggered.connect(self.initialize)
+
+        self.openlastAction = QAction("Open last game", self)
+        self.openlastAction.triggered.connect(lambda: self.openLastClicked(False))
     def _createMenuBar(self):
         menuBar = self.menuBar()
 
         gameMenu = menuBar.addMenu("Game")
+        gameMenu.addAction(self.delAction)
+        gameMenu.addAction(self.openlastAction)
+
         aboutMenu = menuBar.addMenu("About")
         aboutMenu.addAction(self.patchNotesAction)
         aboutMenu.addAction(self.helpAction)
