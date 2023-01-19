@@ -10,6 +10,9 @@ import re
 from sheets import *
 from player import *
 from game import *
+from areYouSure import AreYouSure
+from invalidUserName import InvalidUserName
+from errorWindow import ErrorWindow
 
 
 class WidgetGallery(QMainWindow):
@@ -100,11 +103,9 @@ class WidgetGallery(QMainWindow):
         self.setCentralWidget(widget)
         # self.setLayout(main_layout)
 
-
         self.initialize()
 
         self.setToStartScreen()
-
 
     def _createActions(self):
         self.patchNotesAction = QAction("Patch Notes", self)
@@ -115,16 +116,17 @@ class WidgetGallery(QMainWindow):
 
         self.openlastAction = QAction("Open last game", self)
         self.openlastAction.triggered.connect(lambda: self.openLastClicked(False))
+
     def _createMenuBar(self):
-        menuBar = self.menuBar()
+        menu_bar = self.menuBar()
 
-        gameMenu = menuBar.addMenu("Game")
-        gameMenu.addAction(self.delAction)
-        gameMenu.addAction(self.openlastAction)
+        game_menu = menu_bar.addMenu("Game")
+        game_menu.addAction(self.delAction)
+        game_menu.addAction(self.openlastAction)
 
-        aboutMenu = menuBar.addMenu("About")
-        aboutMenu.addAction(self.patchNotesAction)
-        aboutMenu.addAction(self.helpAction)
+        about_menu = menu_bar.addMenu("About")
+        about_menu.addAction(self.patchNotesAction)
+        about_menu.addAction(self.helpAction)
 
     def initialize(self):
         # create new game
@@ -614,7 +616,7 @@ class WidgetGallery(QMainWindow):
             nameError = QMessageBox()
             nameError.setText("Invalid username!")
             nameError.setWindowTitle("Error!")
-            #nameError.setStandardButtons(QMessageBox.Ok)
+            # nameError.setStandardButtons(QMessageBox.Ok)
             retval = nameError.exec_()
 
     def chooseRole(self, role: str):
@@ -659,7 +661,7 @@ class WidgetGallery(QMainWindow):
     def ownVoiceChanged(self, own_voice: str):
         self.voiceCombo.clear()
         if own_voice != "":
-            self.voiceCombo.addItems(map(str,range(int(own_voice), 6)))
+            self.voiceCombo.addItems(map(str, range(int(own_voice), 6)))
 
     def openLastClicked(self, confirmed: bool):
         if not confirmed:
@@ -724,67 +726,3 @@ class WidgetGallery(QMainWindow):
                 self.resultDraw.click()
             elif game.result == 'Defeat':
                 self.resultDefeat.click()
-
-
-class ErrorWindow(QWidget):
-    def __init__(self, error_text: str):
-        super().__init__()
-        layout = QVBoxLayout()
-        self.label = QLabel(error_text)
-        self.redoButton = QPushButton('Input missing things')
-        self.redoButton.clicked.connect(self.closeThis)
-        layout.addStretch()
-        layout.addWidget(self.label)
-        layout.addWidget(self.redoButton)
-        layout.addStretch()
-        self.setLayout(layout)
-
-    def closeThis(self):
-        self.close()
-
-
-class InvalidUserName(QWidget):
-    def __init__(self):
-        super().__init__()
-        layout = QVBoxLayout()
-        self.label = QLabel('Error, invalid username')
-        self.redoButton = QPushButton('Input username')
-        self.redoButton.clicked.connect(self.closeThis)
-        layout.addStretch()
-        layout.addWidget(self.label)
-        layout.addWidget(self.redoButton)
-        layout.addStretch()
-        self.setLayout(layout)
-
-    def closeThis(self):
-        self.close()
-
-
-class AreYouSure(QWidget):
-    def __init__(self, widgetGallery: WidgetGallery):
-        super().__init__()
-        layout = QVBoxLayout()
-        self.label = QLabel('Are you sure? Current inputs are being deleted')
-        self.openLast = QPushButton('Yes, open last game')
-        self.undo = QPushButton('No, go back')
-        self.openLast.clicked.connect(self.closeThis)
-        self.openLast.clicked.connect(lambda: WidgetGallery.openLastClicked(self=widgetGallery, confirmed=True))
-        self.undo.clicked.connect(self.closeThis)
-
-        labelLayout = QHBoxLayout()
-        labelLayout.addStretch()
-        labelLayout.addWidget(self.label)
-
-        buttonLayout = QHBoxLayout()
-        buttonLayout.addStretch()
-        buttonLayout.addWidget(self.openLast)
-        buttonLayout.addStretch()
-        buttonLayout.addWidget(self.undo)
-        buttonLayout.addStretch()
-
-        layout.addLayout(labelLayout)
-        layout.addLayout(buttonLayout)
-        self.setLayout(layout)
-
-    def closeThis(self):
-        self.close()
