@@ -10,9 +10,7 @@ import re
 from sheets import *
 from player import *
 from game import *
-from areYouSure import AreYouSure
-from invalidUserName import InvalidUserName
-from errorWindow import ErrorWindow
+from areYouSure import showConfirm
 
 
 # noinspection PyUnresolvedReferences
@@ -20,8 +18,6 @@ class WidgetGallery(QMainWindow):
     def __init__(self, parent=None):
         super(WidgetGallery, self).__init__(parent)
 
-        self.openLastConfirm = AreYouSure(self)
-        self.errorUsername = InvalidUserName()
         self.resultDefeat = QPushButton()
         self.resultVictory = QPushButton()
         self.modeButtonPush = QPushButton('Push')
@@ -647,7 +643,11 @@ class WidgetGallery(QMainWindow):
             str_of_errors = ""
             for error in errors:
                 str_of_errors += error + "\n"
-            self.errorWindow(str_of_errors)
+            errors = QMessageBox()
+            errors.setText("One or more things are missing!")
+            errors.setDetailedText(str_of_errors)
+            errors.setWindowTitle("Error!")
+            errors.exec_()
         else:
             self.game.comment = self.comment.text()
             self.doc.addGame(self.game)
@@ -673,7 +673,9 @@ class WidgetGallery(QMainWindow):
 
     def openLastClicked(self, confirmed: bool):
         if not confirmed:
-            self.openLastConfirm.show()
+            retval = showConfirm()
+            if retval == 1024:
+                self.openLastClicked(True)
         else:
             self.initialize()
             game = self.doc.openLastGame()

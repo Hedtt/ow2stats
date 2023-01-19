@@ -4,7 +4,7 @@ import PyQt5
 from PyQt5.QtGui import QPalette, QColor
 from PyQt5.QtWidgets import QApplication, QLabel, QStyle
 # import breeze_resources
-from WidgetGallery import *
+from widgetGallery import *
 from enums import Enum
 from game import *
 import version
