@@ -109,6 +109,7 @@ class WidgetGallery(QMainWindow):
         create actions for the toolbar
         """
         self.patchNotesAction = QAction("Patch Notes", self)
+        self.patchNotesAction.triggered.connect(self.openPatchNotes)
         self.helpAction = QAction("Help", self)
 
         self.delAction = QAction("Delete current game data", self)
@@ -745,3 +746,18 @@ class WidgetGallery(QMainWindow):
                 self.resultDraw.click()
             elif game.result == 'Defeat':
                 self.resultDefeat.click()
+
+    @staticmethod
+    def openPatchNotes():
+        patch_notes = QMessageBox()
+        patch_notes.setIcon(QMessageBox.Information)
+
+        with open('patchNotes', 'r') as file:
+            all_patches = file.read()
+        patches_list = re.split("(\d+.\d+.\d+:)", all_patches)
+        patch_notes.setText(patches_list[1]+patches_list[2])
+        patch_notes.setDetailedText(all_patches)
+        patch_notes.setWindowTitle("Patch Notes")
+        patch_notes.setStandardButtons(QMessageBox.Close)
+
+        patch_notes.exec_()
