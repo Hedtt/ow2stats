@@ -597,12 +597,8 @@ class WidgetGallery(QMainWindow):
     def createSubmitBox(self):
         submit = QPushButton('Submit')
         submit.clicked.connect(self.submitClicked)
-        open_last_game = QPushButton('Open last game')
-        open_last_game.clicked.connect(lambda: self.openLastClicked(False))
 
         layout = QHBoxLayout()
-        layout.addStretch()
-        layout.addWidget(open_last_game)
         layout.addStretch()
         layout.addWidget(submit)
         layout.addStretch()
