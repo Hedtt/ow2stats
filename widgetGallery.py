@@ -132,6 +132,9 @@ class WidgetGallery(QMainWindow):
         about_menu.addAction(self.helpAction)
 
     def initialize(self):
+        """
+        set up a new game
+        """
         # create new game
         self.game = Game()
         self.game.player = self.currentPlayer
@@ -166,6 +169,9 @@ class WidgetGallery(QMainWindow):
         self.comment.setText('')
 
     def setToStartScreen(self):
+        """
+        start screen that only pops up when launching the application where the user puts in their name
+        """
         self.mainScreen.setVisible(True)
         self.generalBox.setVisible(False)
         self.roleGroupBox.setVisible(False)
@@ -183,6 +189,9 @@ class WidgetGallery(QMainWindow):
         self.menuBar().setVisible(False)
 
     def setToStatsScreen(self):
+        """
+        main window of the application
+        """
         self.mainScreen.setVisible(False)
         self.generalBox.setVisible(True)
         self.roleGroupBox.setVisible(True)
@@ -195,6 +204,9 @@ class WidgetGallery(QMainWindow):
         self.menuBar().setVisible(True)
 
     def createGeneralBox(self):
+        """
+        creates the top most box with date, group size, voice in group, comp
+        """
         self.dateEdit.setDate(QDate.currentDate())
         self.dateEdit.dateChanged.connect(lambda: self.game.dateChanged(self.dateEdit.date()))
         people_playing_str = QLabel('# Group')
@@ -229,7 +241,9 @@ class WidgetGallery(QMainWindow):
         self.generalBox.setLayout(layout)
 
     def createRoleGroupBox(self):
-
+        """
+        what role is played -> display that role, what role is queued?
+        """
         radio_button_tank = QRadioButton('Tank')
         radio_button_tank.clicked.connect(lambda: self.chooseRole(radio_button_tank.text()))
         radio_button_tank.clicked.connect(lambda: self.game.roleChosen(Role.Tank))
@@ -244,20 +258,19 @@ class WidgetGallery(QMainWindow):
         self.radioGroupRole.addButton(radio_button_dps)
         self.radioGroupRole.addButton(radio_button_support)
 
+        # what role is queued?
         check_button_queued_tank = QCheckBox('Tank')
         check_button_queued_tank.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Tank))
-        # check_button_queued_tank.stateChanged.connect(lambda: self.roleQueuedChanged(Role.Tank))
         check_button_queued_dps = QCheckBox('Dps')
         check_button_queued_dps.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Dps))
-        # check_button_queued_dps.stateChanged.connect(lambda: self.roleQueuedChanged(Role.Dps))
         check_button_queued_support = QCheckBox('Support')
         check_button_queued_support.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Support))
-        # check_button_queued_support.stateChanged.connect(lambda: self.roleQueuedChanged(Role.Support))
 
         self.checkGroupRoleQueue.addButton(check_button_queued_tank)
         self.checkGroupRoleQueue.addButton(check_button_queued_dps)
         self.checkGroupRoleQueue.addButton(check_button_queued_support)
 
+        # set up pictures for role played
         tank_role_pixmap = QtGui.QPixmap('pictures/Tank_icon.svg')
         dps_role_pixmap = QtGui.QPixmap('pictures/Damage_icon.svg')
         support_role_pixmap = QtGui.QPixmap('pictures/Support_icon.svg')
