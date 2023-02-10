@@ -474,6 +474,8 @@ class WidgetGallery(QMainWindow):
         map_selection_back = QPushButton('Back to Mode select')
         map_selection_back.clicked.connect(self.mapSelect_back)
 
+        map_button_peninsula = QRadioButton('Antarctic Peninsula')
+        map_button_peninsula.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Peninsula))
         map_button_busan = QRadioButton('Busan')
         map_button_busan.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Busan))
         map_button_ilios = QRadioButton('Ilios')
@@ -485,6 +487,7 @@ class WidgetGallery(QMainWindow):
         map_button_oasis = QRadioButton('Oasis')
         map_button_oasis.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Oasis))
 
+        self.radioKothGroup.addButton(map_button_peninsula)
         self.radioKothGroup.addButton(map_button_busan)
         self.radioKothGroup.addButton(map_button_ilios)
         self.radioKothGroup.addButton(map_button_lijiang)
@@ -493,6 +496,7 @@ class WidgetGallery(QMainWindow):
 
         koth_layout = QVBoxLayout()
         koth_layout.addWidget(map_selection_back)
+        koth_layout.addWidget(map_button_peninsula)
         koth_layout.addWidget(map_button_busan)
         koth_layout.addWidget(map_button_ilios)
         koth_layout.addWidget(map_button_lijiang)
