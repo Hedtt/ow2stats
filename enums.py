@@ -54,6 +54,7 @@ class Map(Enum):
         Lijiang = 3
         Nepal = 4
         Oasis = 5
+        Peninsula = 6
 
     class PushMap(Enum):
         Colosseo = 1
