@@ -18,6 +18,7 @@ class WidgetGallery(QMainWindow):
     def __init__(self, parent=None):
         super(WidgetGallery, self).__init__(parent)
 
+        self.missing_params = QLabel()
         self.resultDefeat = QPushButton()
         self.resultVictory = QPushButton()
         self.modeButtonPush = QPushButton('Push')
@@ -168,6 +169,10 @@ class WidgetGallery(QMainWindow):
         # Social reset
         self.voiceCombo.setCurrentIndex(self.ownVoicechat.currentIndex() + 1)
         self.comment.setText('')
+
+        # Set submit uncheckable
+        self.submit.setDisabled(True)
+        self.someParamChanged()
 
     def setToStartScreen(self):
         """
@@ -361,8 +366,11 @@ class WidgetGallery(QMainWindow):
     def createTeamGroupBox(self):
         team_button_attack = QRadioButton('Attack')
         team_button_attack.clicked.connect(lambda: self.game.teamChosen(Team.Attack))
+        team_button_attack.clicked.connect(self.someParamChanged)
+
         team_button_defense = QRadioButton('Defense')
         team_button_defense.clicked.connect(lambda: self.game.teamChosen(Team.Defense))
+        team_button_defense.clicked.connect(self.someParamChanged)
 
         self.radioGroupTeam.addButton(team_button_attack)
         self.radioGroupTeam.addButton(team_button_defense)
@@ -374,6 +382,7 @@ class WidgetGallery(QMainWindow):
         self.teamGroupBox.setLayout(layout)
 
     def comp_clicked(self, state):
+        self.someParamChanged()
         # comp is enabled
         self.game.teamChosen(Team.Comp)
         if state == QtCore.Qt.Checked:
@@ -392,20 +401,34 @@ class WidgetGallery(QMainWindow):
     def createEscortMapsBox(self):
         map_selection_back = QPushButton('Back to Mode select')
         map_selection_back.clicked.connect(self.mapSelect_back)
+
         map_button_dorado = QRadioButton('Dorado')
         map_button_dorado.clicked.connect(lambda: self.game.mapChosen(Map.EscortMap.value.Dorado))
+        map_button_dorado.clicked.connect(self.someParamChanged)
+
         map_button_havana = QRadioButton('Havana')
         map_button_havana.clicked.connect(lambda: self.game.mapChosen(Map.EscortMap.value.Havana))
+        map_button_havana.clicked.connect(self.someParamChanged)
+
         map_button_junkertown = QRadioButton('Junkertown')
         map_button_junkertown.clicked.connect(lambda: self.game.mapChosen(Map.EscortMap.value.Junkertown))
+        map_button_junkertown.clicked.connect(self.someParamChanged)
+
         map_button_rialto = QRadioButton('Rialto')
         map_button_rialto.clicked.connect(lambda: self.game.mapChosen(Map.EscortMap.value.Rialto))
+        map_button_rialto.clicked.connect(self.someParamChanged)
+
         map_button_route66 = QRadioButton('Route 66')
         map_button_route66.clicked.connect(lambda: self.game.mapChosen(Map.EscortMap.value.Route))
+        map_button_route66.clicked.connect(self.someParamChanged)
+
         map_button_shambali = QRadioButton('Shambali')
         map_button_shambali.clicked.connect(lambda: self.game.mapChosen(Map.EscortMap.value.Shambali))
+        map_button_shambali.clicked.connect(self.someParamChanged)
+
         map_button_watchpoint_gibraltar = QRadioButton('Watchpoint: Gibraltar')
         map_button_watchpoint_gibraltar.clicked.connect(lambda: self.game.mapChosen(Map.EscortMap.value.Gibraltar))
+        map_button_watchpoint_gibraltar.clicked.connect(self.someParamChanged)
 
         self.radioEscortGroup.addButton(map_button_dorado)
         self.radioEscortGroup.addButton(map_button_havana)
@@ -433,20 +456,35 @@ class WidgetGallery(QMainWindow):
 
         map_button_blizzard_world = QRadioButton('Blizzard World')
         map_button_blizzard_world.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.BlizzardWorld))
+        map_button_blizzard_world.clicked.connect(self.someParamChanged)
+
         map_button_eichenwalde = QRadioButton('Eichenwalde')
         map_button_eichenwalde.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.Eichenwalde))
+        map_button_eichenwalde.clicked.connect(self.someParamChanged)
+
         map_button_hollywood = QRadioButton('Hollywood')
         map_button_hollywood.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.Hollywood))
+        map_button_hollywood.clicked.connect(self.someParamChanged)
+
         map_button_kings_row = QRadioButton('King\'s Row')
         map_button_kings_row.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.KingsRow))
+        map_button_kings_row.clicked.connect(self.someParamChanged)
+
         map_button_new_york = QRadioButton('Midtown')
         map_button_new_york.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.Midtown))
+        map_button_new_york.clicked.connect(self.someParamChanged)
+
         map_button_numbani = QRadioButton('Numbani')
         map_button_numbani.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.Numbani))
+        map_button_numbani.clicked.connect(self.someParamChanged)
+
         map_button_paraiso = QRadioButton('Paraiso')
         map_button_paraiso.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.Paraiso))
+        map_button_paraiso.clicked.connect(self.someParamChanged)
+
         map_button_rio_de_janeiro = QRadioButton('Rio de Janeiro')
         map_button_rio_de_janeiro.clicked.connect(lambda: self.game.mapChosen(Map.HybridMap.value.RioDeJaneiro))
+        map_button_rio_de_janeiro.clicked.connect(self.someParamChanged)
 
         self.radioHybridGroup.addButton(map_button_blizzard_world)
         self.radioHybridGroup.addButton(map_button_eichenwalde)
@@ -476,14 +514,23 @@ class WidgetGallery(QMainWindow):
 
         map_button_busan = QRadioButton('Busan')
         map_button_busan.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Busan))
+        map_button_busan.clicked.connect(self.someParamChanged)
+
         map_button_ilios = QRadioButton('Ilios')
         map_button_ilios.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Ilios))
+        map_button_ilios.clicked.connect(self.someParamChanged)
+
         map_button_lijiang = QRadioButton('Lijiang Tower')
         map_button_lijiang.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Lijiang))
+        map_button_lijiang.clicked.connect(self.someParamChanged)
+
         map_button_nepal = QRadioButton('Nepal')
         map_button_nepal.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Nepal))
+        map_button_nepal.clicked.connect(self.someParamChanged)
+
         map_button_oasis = QRadioButton('Oasis')
         map_button_oasis.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Oasis))
+        map_button_oasis.clicked.connect(self.someParamChanged)
 
         self.radioKothGroup.addButton(map_button_busan)
         self.radioKothGroup.addButton(map_button_ilios)
@@ -507,10 +554,15 @@ class WidgetGallery(QMainWindow):
 
         map_button_esperanca = QRadioButton('Esperanca')
         map_button_esperanca.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.Esperanca))
+        map_button_esperanca.clicked.connect(self.someParamChanged)
+
         map_button_rome = QRadioButton('Rome')
         map_button_rome.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.Colosseo))
+        map_button_rome.clicked.connect(self.someParamChanged)
+
         map_button_toronto = QRadioButton('Toronto')
         map_button_toronto.clicked.connect(lambda: self.game.mapChosen(Map.PushMap.value.NewQueenStreet))
+        map_button_toronto.clicked.connect(self.someParamChanged)
 
         self.radioPushGroup.addButton(map_button_esperanca)
         self.radioPushGroup.addButton(map_button_rome)
@@ -556,6 +608,8 @@ class WidgetGallery(QMainWindow):
         else:
             self.resultDraw.setVisible(True)
 
+        self.someParamChanged()
+
     def createSocialGroupBox(self):
         voice_combo_str = QLabel('# in vc')
         voice_combo_str.setToolTip('How many people are in the team voicechat (including you and your group)?')
@@ -575,12 +629,17 @@ class WidgetGallery(QMainWindow):
 
     def createResultBox(self):
         self.resultVictory.clicked.connect(lambda: self.game.resultChanged(Result.Victory))
+        self.resultVictory.clicked.connect(self.someParamChanged)
         self.resultVictory.setIcon(QtGui.QIcon('pictures/victory_transparent.png'))
         self.resultVictory.setIconSize(QtCore.QSize(100, 40))
+
         self.resultDefeat.clicked.connect(lambda: self.game.resultChanged(Result.Defeat))
+        self.resultDefeat.clicked.connect(self.someParamChanged)
         self.resultDefeat.setIcon(QtGui.QIcon('pictures/defeat_transparent.png'))
         self.resultDefeat.setIconSize(QtCore.QSize(100, 40))
+
         self.resultDraw.clicked.connect(lambda: self.game.resultChanged(Result.Draw))
+        self.resultDraw.clicked.connect(self.someParamChanged)
         self.resultDraw.setIcon(QtGui.QIcon('pictures/draw_transparent.png'))
         self.resultDraw.setIconSize(QtCore.QSize(100, 40))
         self.resultDraw.setVisible(False)
@@ -596,12 +655,14 @@ class WidgetGallery(QMainWindow):
         self.resultBox.setLayout(layout)
 
     def createSubmitBox(self):
-        submit = QPushButton('Submit')
-        submit.clicked.connect(self.submitClicked)
+        self.submit = QPushButton('Submit')
+        self.submit.clicked.connect(self.submitClicked)
 
         layout = QHBoxLayout()
         layout.addStretch()
-        layout.addWidget(submit)
+        layout.addWidget(self.missing_params)
+        layout.addStretch()
+        layout.addWidget(self.submit)
         layout.addStretch()
 
         self.submitBox.setLayout(layout)
@@ -634,6 +695,7 @@ class WidgetGallery(QMainWindow):
             retval = name_error.exec_()
 
     def chooseRole(self, role: str):
+        self.someParamChanged()
         if role == 'Tank':
             self.tankRoleImage.setVisible(True)
             self.dpsRoleImage.setVisible(False)
@@ -746,6 +808,18 @@ class WidgetGallery(QMainWindow):
                 self.resultDraw.click()
             elif game.result == 'Defeat':
                 self.resultDefeat.click()
+
+    def someParamChanged(self):
+        [valid, errors] = self.game.gameValid()
+        if valid is False:
+            str_of_errors = ""
+            for error in errors:
+                str_of_errors += error + "\n"
+            self.missing_params.setText(str_of_errors)
+        else:
+            self.submit.setDisabled(False)
+
+
 
     @staticmethod
     def openPatchNotes():
