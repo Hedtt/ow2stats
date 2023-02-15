@@ -67,7 +67,6 @@ class WidgetGallery(QMainWindow):
         self.mapGroupBox = QGroupBox('Map')
         self.roleGroupBox = QGroupBox('Role')
 
-        self.createMapGroupBox()
         self.createRoleGroupBox()
         self.createTeamGroupBox()
         self.createGeneralBox()
@@ -316,13 +315,6 @@ class WidgetGallery(QMainWindow):
         main_layout.addLayout(support_role_image_layout)
         main_layout.addLayout(layout_queue)
         self.roleGroupBox.setLayout(main_layout)
-
-    def createMapGroupBox(self):
-        map_button_gothenburg = QRadioButton('Gothenburg')
-        map_button_india = QRadioButton('India')
-        map_button_monte_carlo = QRadioButton('Monte Carlo')
-
-        # TODO: add new maps to mode
 
     def createModeGroupBox(self):
         self.modeButtonEscort.clicked.connect(self.modeEscort_clicked)
