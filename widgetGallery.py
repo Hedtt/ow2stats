@@ -514,6 +514,7 @@ class WidgetGallery(QMainWindow):
 
         map_button_peninsula = QRadioButton('Antarctic Peninsula')
         map_button_peninsula.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Peninsula))
+        map_button_peninsula.clicked.connect(self.someParamChanged)
         map_button_busan = QRadioButton('Busan')
         map_button_busan.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Busan))
         map_button_busan.clicked.connect(self.someParamChanged)
