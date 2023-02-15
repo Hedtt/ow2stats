@@ -252,12 +252,15 @@ class WidgetGallery(QMainWindow):
         radio_button_tank = QRadioButton('Tank')
         radio_button_tank.clicked.connect(lambda: self.chooseRole(radio_button_tank.text()))
         radio_button_tank.clicked.connect(lambda: self.game.roleChosen(Role.Tank))
+        radio_button_tank.clicked.connect(self.someParamChanged)
         radio_button_dps = QRadioButton('Dps')
         radio_button_dps.clicked.connect(lambda: self.game.roleChosen(Role.Dps))
         radio_button_dps.clicked.connect(lambda: self.chooseRole(radio_button_dps.text()))
+        radio_button_dps.clicked.connect(self.someParamChanged)
         radio_button_support = QRadioButton('Support')
         radio_button_support.clicked.connect(lambda: self.game.roleChosen(Role.Support))
         radio_button_support.clicked.connect(lambda: self.chooseRole(radio_button_support.text()))
+        radio_button_support.clicked.connect(self.someParamChanged)
 
         self.radioGroupRole.addButton(radio_button_tank)
         self.radioGroupRole.addButton(radio_button_dps)
@@ -266,10 +269,13 @@ class WidgetGallery(QMainWindow):
         # what role is queued?
         check_button_queued_tank = QCheckBox('Tank')
         check_button_queued_tank.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Tank))
+        check_button_queued_tank.stateChanged.connect(self.someParamChanged)
         check_button_queued_dps = QCheckBox('Dps')
         check_button_queued_dps.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Dps))
+        check_button_queued_dps.stateChanged.connect(self.someParamChanged)
         check_button_queued_support = QCheckBox('Support')
         check_button_queued_support.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Support))
+        check_button_queued_support.stateChanged.connect(self.someParamChanged)
 
         self.checkGroupRoleQueue.addButton(check_button_queued_tank)
         self.checkGroupRoleQueue.addButton(check_button_queued_dps)
@@ -814,6 +820,7 @@ class WidgetGallery(QMainWindow):
                 str_of_errors += error + "\n"
             self.missing_params.setText(str_of_errors)
         else:
+            self.missing_params.setText('All inputs are valid')
             self.submit.setDisabled(False)
 
 
