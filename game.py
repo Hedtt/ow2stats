@@ -68,7 +68,7 @@ class Game:
 
     def gameValid(self) -> [bool, List[str]]:
         errors = []
-        role_played_is_in_role_queued = BoolStrAttributes('Role played is not in role queued!')
+        role_played_is_in_role_queued = BoolStrAttributes(error_str='Role played is not in role queued!', bool_val=True)
         if len(self.roleQueue) > 0:
             role_played_is_in_role_queued.val = self.role in self.roleQueue
 
