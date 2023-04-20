@@ -166,7 +166,11 @@ class WidgetGallery(QMainWindow):
         self.mapSelect_back()
 
         # Social reset
-        self.voiceCombo.setCurrentIndex(self.ownVoicechat.currentIndex() + 1)
+        self.peoplePlaying.setCurrentIndex(self.peoplePlaying.currentIndex())
+        self.game.groupSizeChanged(self.peoplePlaying.currentIndex()+1)
+        self.ownVoicechat.setCurrentIndex(self.ownVoicechat.currentIndex())
+        self.game.ownVoiceChanged(self.ownVoicechat.currentIndex())
+        self.voiceCombo.setCurrentIndex(self.ownVoicechat.currentIndex())
         self.comment.setText('')
 
         # Set submit uncheckable
