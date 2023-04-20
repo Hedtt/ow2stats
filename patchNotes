@@ -1,3 +1,8 @@
+0.0.4:
+    -added shambali
+    -added circuit royal
+    -fixed error where new game doesn't keep current group size
+
 0.0.3:
     -added antarctic peninsula in map pool
 
