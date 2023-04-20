@@ -404,6 +404,10 @@ class WidgetGallery(QMainWindow):
         map_selection_back = QPushButton('Back to Mode select')
         map_selection_back.clicked.connect(self.mapSelect_back)
 
+        map_button_circuit = QRadioButton('Circuit Royal')
+        map_button_circuit.clicked.connect(lambda: self.game.mapChosen(Map.EscortMap.value.CircuitRoyal))
+        map_button_circuit.clicked.connect(self.someParamChanged)
+
         map_button_dorado = QRadioButton('Dorado')
         map_button_dorado.clicked.connect(lambda: self.game.mapChosen(Map.EscortMap.value.Dorado))
         map_button_dorado.clicked.connect(self.someParamChanged)
@@ -432,6 +436,7 @@ class WidgetGallery(QMainWindow):
         map_button_watchpoint_gibraltar.clicked.connect(lambda: self.game.mapChosen(Map.EscortMap.value.Gibraltar))
         map_button_watchpoint_gibraltar.clicked.connect(self.someParamChanged)
 
+        self.radioEscortGroup.addButton(map_button_circuit)
         self.radioEscortGroup.addButton(map_button_dorado)
         self.radioEscortGroup.addButton(map_button_havana)
         self.radioEscortGroup.addButton(map_button_junkertown)
@@ -442,6 +447,7 @@ class WidgetGallery(QMainWindow):
 
         escort_layout = QVBoxLayout()
         escort_layout.addWidget(map_selection_back)
+        escort_layout.addWidget(map_button_circuit)
         escort_layout.addWidget(map_button_dorado)
         escort_layout.addWidget(map_button_havana)
         escort_layout.addWidget(map_button_junkertown)
