@@ -2,6 +2,7 @@
     -added shambali
     -added circuit royal
     -fixed error where new game doesn't keep current group size
+    -added auto-update (i hope it kinda works)
 
 0.0.3:
     -added antarctic peninsula in map pool
