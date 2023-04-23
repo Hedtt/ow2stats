@@ -18,4 +18,4 @@ def UpdateApplication():
     f2 = open('setup//Output/ow2stats_setup.exe', 'wb')
     f2.write(file)
     f2.close()
-    subprocess.call('mysetup.exe')
+    subprocess.call('setup//Output/ow2stats_setup.exe')
