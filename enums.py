@@ -29,7 +29,7 @@ class Result(Enum):
 
 class Map(Enum):
     class EscortMap(Enum):
-        CircuitRoayal = 1
+        CircuitRoyal = 1
         Dorado = 2
         Havana = 3
         Junkertown = 4
