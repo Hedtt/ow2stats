@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit,
                              QProgressBar, QPushButton, QRadioButton, QScrollBar, QSizePolicy,
                              QSlider, QSpinBox, QStyleFactory, QTableWidget, QTabWidget, QTextEdit,
                              QVBoxLayout, QWidget, QAbstractButton, QDateEdit, QButtonGroup, QMainWindow, QMenuBar,
-                             QDockWidget, QMenu, QAction, QMessageBox)
+                             QDockWidget, QMenu, QAction, QMessageBox, QFrame)
 import re
 from sheets import *
 from player import *
@@ -18,6 +18,7 @@ class WidgetGallery(QMainWindow):
     def __init__(self, parent=None):
         super(WidgetGallery, self).__init__(parent)
 
+        self.check_button_save_queue = None
         self.missing_params = QLabel()
         self.resultDefeat = QPushButton()
         self.resultVictory = QPushButton()
@@ -25,12 +26,16 @@ class WidgetGallery(QMainWindow):
         self.modeButtonKoth = QPushButton('Koth')
         self.modeButtonHybrid = QPushButton('Hybrid')
         self.modeButtonEscort = QPushButton('Escort')
+        self.modeButtonFlashpoint = QPushButton('Flashpoint')
         self.peoplePlaying = QComboBox()
         self.dateEdit = QDateEdit()
         self.game = None
         self.comment = QLineEdit()
         self.doc = GDoc()
         self.currentPlayer = None
+        self.currentVersion = open('setup/version').read()
+        self.setWindowTitle(f'Ow2Stats Version {self.currentVersion}')
+        self.saveQueue = False
 
         self.voiceCombo = QComboBox()
         self.ownVoicechat = QComboBox()
@@ -38,6 +43,7 @@ class WidgetGallery(QMainWindow):
         self.radioKothGroup = QButtonGroup()
         self.radioEscortGroup = QButtonGroup()
         self.radioHybridGroup = QButtonGroup()
+        self.radioFlashpointGroup = QButtonGroup()
         self.radioGroupTeam = QButtonGroup()
         self.radioGroupRole = QButtonGroup()
         self.checkGroupRoleQueue = QButtonGroup()
@@ -61,6 +67,8 @@ class WidgetGallery(QMainWindow):
         self.hybridMapsBox.setVisible(False)
         self.escortMapsBox = QGroupBox('Escort')
         self.escortMapsBox.setVisible(False)
+        self.flashpointMapsBox = QGroupBox('Flashpoint')
+        self.flashpointMapsBox.setVisible(False)
 
         self.teamGroupBox = QGroupBox('Team')
         self.modeGroupBox = QGroupBox('Mode')
@@ -75,6 +83,7 @@ class WidgetGallery(QMainWindow):
         self.createHybridMapsBox()
         self.createKothMapsBox()
         self.createPushMapsBox()
+        self.createFlashpointMapsBox()
         self.createSocialGroupBox()
         self.createResultBox()
         self.createSubmitBox()
@@ -93,6 +102,7 @@ class WidgetGallery(QMainWindow):
         main_layout.addWidget(self.hybridMapsBox, 2, 0)
         main_layout.addWidget(self.kothMapsBox, 2, 0)
         main_layout.addWidget(self.pushMapsBox, 2, 0)
+        main_layout.addWidget(self.flashpointMapsBox, 2,0)
         main_layout.addWidget(self.teamGroupBox, 3, 0)
         main_layout.addWidget(self.socialGroupBox, 4, 0)
         main_layout.addWidget(self.resultBox, 5, 0)
@@ -136,6 +146,12 @@ class WidgetGallery(QMainWindow):
         """
         set up a new game
         """
+        # save old queue
+        if self.saveQueue:
+            tmp = self.game.roleQueue
+        else:
+            tmp = None
+
         # create new game
         self.game = Game()
         self.game.player = self.currentPlayer
@@ -162,6 +178,17 @@ class WidgetGallery(QMainWindow):
         if self.compPlaying.isChecked():
             self.comp_clicked(state=QtCore.Qt.Checked)
 
+        # Save Queue if clicked
+        if tmp is not None:
+            for role in tmp:
+                if role == Role.Tank:
+                    self.check_button_queued_tank.setChecked(True)
+                elif role == Role.Dps:
+                    self.check_button_queued_dps.setChecked(True)
+                else:
+                    self.check_button_queued_support.setChecked(True)
+
+
         # Map reset
         self.mapSelect_back()
 
@@ -172,6 +199,11 @@ class WidgetGallery(QMainWindow):
         self.game.ownVoiceChanged(self.ownVoicechat.currentIndex())
         self.voiceCombo.setCurrentIndex(self.ownVoicechat.currentIndex())
         self.comment.setText('')
+
+        # Unset color from result screen
+        self.resultVictory.setStyleSheet("background-color: none")
+        self.resultDefeat.setStyleSheet("background-color: none")
+        self.resultDraw.setStyleSheet("background-color: none")
 
         # Set submit uncheckable
         self.submit.setDisabled(True)
@@ -189,6 +221,7 @@ class WidgetGallery(QMainWindow):
         self.hybridMapsBox.setVisible(False)
         self.kothMapsBox.setVisible(False)
         self.pushMapsBox.setVisible(False)
+        self.flashpointMapsBox.setVisible(False)
         self.teamGroupBox.setVisible(False)
         self.socialGroupBox.setVisible(False)
         self.resultBox.setVisible(False)
@@ -266,24 +299,34 @@ class WidgetGallery(QMainWindow):
         radio_button_support.clicked.connect(lambda: self.chooseRole(radio_button_support.text()))
         radio_button_support.clicked.connect(self.someParamChanged)
 
+
         self.radioGroupRole.addButton(radio_button_tank)
         self.radioGroupRole.addButton(radio_button_dps)
         self.radioGroupRole.addButton(radio_button_support)
 
         # what role is queued?
-        check_button_queued_tank = QCheckBox('Tank')
-        check_button_queued_tank.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Tank))
-        check_button_queued_tank.stateChanged.connect(self.someParamChanged)
-        check_button_queued_dps = QCheckBox('Dps')
-        check_button_queued_dps.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Dps))
-        check_button_queued_dps.stateChanged.connect(self.someParamChanged)
-        check_button_queued_support = QCheckBox('Support')
-        check_button_queued_support.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Support))
-        check_button_queued_support.stateChanged.connect(self.someParamChanged)
+        self.check_button_queued_tank = QCheckBox('Tank')
+        self.check_button_queued_tank.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Tank))
+        self.check_button_queued_tank.stateChanged.connect(self.someParamChanged)
+        self.check_button_queued_dps = QCheckBox('Dps')
+        self.check_button_queued_dps.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Dps))
+        self.check_button_queued_dps.stateChanged.connect(self.someParamChanged)
+        self.check_button_queued_support = QCheckBox('Support')
+        self.check_button_queued_support.stateChanged.connect(lambda: self.game.roleQueuedChanged(Role.Support))
+        self.check_button_queued_support.stateChanged.connect(self.someParamChanged)
 
-        self.checkGroupRoleQueue.addButton(check_button_queued_tank)
-        self.checkGroupRoleQueue.addButton(check_button_queued_dps)
-        self.checkGroupRoleQueue.addButton(check_button_queued_support)
+        separator = QFrame()
+        separator.setFrameShape(QFrame.HLine)
+        # separator.setSizePolicy(QSizePolicy.Minimum,QSizePolicy.Expanding)
+        separator.setLineWidth(1)
+        separator.setFrameShadow(QFrame.Sunken)
+        self.check_button_save_queue = QCheckBox('Save Queue')
+        self.check_button_save_queue.stateChanged.connect(self.saveQueueChanged)
+
+
+        self.checkGroupRoleQueue.addButton(self.check_button_queued_tank)
+        self.checkGroupRoleQueue.addButton(self.check_button_queued_dps)
+        self.checkGroupRoleQueue.addButton(self.check_button_queued_support)
 
         # set up pictures for role played
         tank_role_pixmap = QtGui.QPixmap('pictures/Tank_icon.svg')
@@ -315,9 +358,11 @@ class WidgetGallery(QMainWindow):
         layout.addWidget(radio_button_support)
         layout_queue = QVBoxLayout()
         layout_queue.addWidget(QLabel('Queued for:'))
-        layout_queue.addWidget(check_button_queued_tank)
-        layout_queue.addWidget(check_button_queued_dps)
-        layout_queue.addWidget(check_button_queued_support)
+        layout_queue.addWidget(self.check_button_queued_tank)
+        layout_queue.addWidget(self.check_button_queued_dps)
+        layout_queue.addWidget(self.check_button_queued_support)
+        layout_queue.addWidget(separator)
+        layout_queue.addWidget(self.check_button_save_queue)
         main_layout = QHBoxLayout()
         main_layout.addLayout(layout)
         main_layout.addLayout(tank_role_image_layout)
@@ -335,11 +380,14 @@ class WidgetGallery(QMainWindow):
         self.modeButtonKoth.clicked.connect(lambda: self.game.gameModeChosen(GameMode.Koth))
         self.modeButtonPush.clicked.connect(self.modePush_clicked)
         self.modeButtonPush.clicked.connect(lambda: self.game.gameModeChosen(GameMode.Push))
+        self.modeButtonFlashpoint.clicked.connect(self.modeFlashpoint_clicked)
+        self.modeButtonFlashpoint.clicked.connect(lambda: self.game.gameModeChosen(GameMode.Flashpoint))
         layout = QHBoxLayout()
         layout.addWidget(self.modeButtonEscort)
         layout.addWidget(self.modeButtonHybrid)
         layout.addWidget(self.modeButtonKoth)
         layout.addWidget(self.modeButtonPush)
+        layout.addWidget(self.modeButtonFlashpoint)
 
         self.modeGroupBox.setLayout(layout)
 
@@ -364,6 +412,13 @@ class WidgetGallery(QMainWindow):
         self.game.teamChosen(Team.NoTeam)
         self.pushMapsBox.setVisible(True)
         self.resultDraw.setVisible(True)
+
+    def modeFlashpoint_clicked(self):
+        self.modeGroupBox.setVisible(False)
+        self.teamGroupBox.setVisible(False)
+        self.game.teamChosen(Team.NoTeam)
+        self.flashpointMapsBox.setVisible(True)
+        self.resultDraw.setVisible(False)
 
     def createTeamGroupBox(self):
         team_button_attack = QRadioButton('Attack')
@@ -543,12 +598,18 @@ class WidgetGallery(QMainWindow):
         map_button_oasis.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Oasis))
         map_button_oasis.clicked.connect(self.someParamChanged)
 
+        map_button_samoa = QRadioButton('Samoa')
+        map_button_samoa.clicked.connect(lambda: self.game.mapChosen(Map.KothMap.value.Samoa))
+        map_button_samoa.clicked.connect(self.someParamChanged)
+
+
         self.radioKothGroup.addButton(map_button_peninsula)
         self.radioKothGroup.addButton(map_button_busan)
         self.radioKothGroup.addButton(map_button_ilios)
         self.radioKothGroup.addButton(map_button_lijiang)
         self.radioKothGroup.addButton(map_button_nepal)
         self.radioKothGroup.addButton(map_button_oasis)
+        self.radioKothGroup.addButton(map_button_samoa)
 
         koth_layout = QVBoxLayout()
         koth_layout.addWidget(map_selection_back)
@@ -558,6 +619,7 @@ class WidgetGallery(QMainWindow):
         koth_layout.addWidget(map_button_lijiang)
         koth_layout.addWidget(map_button_nepal)
         koth_layout.addWidget(map_button_oasis)
+        koth_layout.addWidget(map_button_samoa)
 
         self.kothMapsBox.setLayout(koth_layout)
 
@@ -589,12 +651,35 @@ class WidgetGallery(QMainWindow):
 
         self.pushMapsBox.setLayout(push_layout)
 
+    def createFlashpointMapsBox(self):
+        map_selection_back = QPushButton('Back to Mode select')
+        map_selection_back.clicked.connect(self.mapSelect_back)
+
+        map_button_newjunkcity = QRadioButton('New Junk City')
+        map_button_newjunkcity.clicked.connect(lambda: self.game.mapChosen(Map.FlashpointMap.value.NewJunkCity))
+        map_button_newjunkcity.clicked.connect(self.someParamChanged)
+
+        map_button_suravasa = QRadioButton('Suravasa')
+        map_button_suravasa.clicked.connect(lambda: self.game.mapChosen(Map.FlashpointMap.value.Suravasa))
+        map_button_suravasa.clicked.connect(self.someParamChanged)
+
+        self.radioFlashpointGroup.addButton(map_button_newjunkcity)
+        self.radioFlashpointGroup.addButton(map_button_suravasa)
+
+        flashpoint_layout = QVBoxLayout()
+        flashpoint_layout.addWidget(map_selection_back)
+        flashpoint_layout.addWidget(map_button_newjunkcity)
+        flashpoint_layout.addWidget(map_button_suravasa)
+
+        self.flashpointMapsBox.setLayout(flashpoint_layout)
+
     def mapSelect_back(self):
         # Button reset
         self.radioEscortGroup.setExclusive(False)
         self.radioHybridGroup.setExclusive(False)
         self.radioKothGroup.setExclusive(False)
         self.radioPushGroup.setExclusive(False)
+        self.radioFlashpointGroup.setExclusive(False)
         if self.radioEscortGroup.checkedButton() is not None:
             self.radioEscortGroup.checkedButton().setChecked(False)
         if self.radioHybridGroup.checkedButton() is not None:
@@ -603,10 +688,13 @@ class WidgetGallery(QMainWindow):
             self.radioKothGroup.checkedButton().setChecked(False)
         if self.radioPushGroup.checkedButton() is not None:
             self.radioPushGroup.checkedButton().setChecked(False)
+        if self.radioFlashpointGroup.checkedButton() is not None:
+            self.radioFlashpointGroup.checkedButton().setChecked(False)
         self.radioEscortGroup.setExclusive(True)
         self.radioHybridGroup.setExclusive(True)
         self.radioKothGroup.setExclusive(True)
         self.radioPushGroup.setExclusive(True)
+        self.radioFlashpointGroup.setExclusive(True)
 
         # Ui reset
         self.modeGroupBox.setVisible(True)
@@ -614,6 +702,7 @@ class WidgetGallery(QMainWindow):
         self.hybridMapsBox.setVisible(False)
         self.kothMapsBox.setVisible(False)
         self.pushMapsBox.setVisible(False)
+        self.flashpointMapsBox.setVisible(False)
         self.game.mapIsSelected.val = False
         if not self.compPlaying.isChecked():
             self.teamGroupBox.setVisible(True)
@@ -641,21 +730,41 @@ class WidgetGallery(QMainWindow):
         self.socialGroupBox.setLayout(layout)
 
     def createResultBox(self):
+        def toggle_selected(result: Result):
+            if result == Result.Victory:
+                self.resultVictory.setStyleSheet("background-color: black")
+                self.resultDefeat.setStyleSheet("background-color: none")
+                self.resultDraw.setStyleSheet("background-color: none")
+            elif result == Result.Defeat:
+                self.resultVictory.setStyleSheet("background-color: none")
+                self.resultDefeat.setStyleSheet("background-color: black")
+                self.resultDraw.setStyleSheet("background-color: none")
+            elif result == Result.Draw:
+                self.resultVictory.setStyleSheet("background-color: none")
+                self.resultDefeat.setStyleSheet("background-color: none")
+                self.resultDraw.setStyleSheet("background-color: black")
+
         self.resultVictory.clicked.connect(lambda: self.game.resultChanged(Result.Victory))
         self.resultVictory.clicked.connect(self.someParamChanged)
         self.resultVictory.setIcon(QtGui.QIcon('pictures/victory_transparent.png'))
         self.resultVictory.setIconSize(QtCore.QSize(100, 40))
+        self.resultVictory.clicked.connect(lambda: toggle_selected(Result.Victory))
 
         self.resultDefeat.clicked.connect(lambda: self.game.resultChanged(Result.Defeat))
         self.resultDefeat.clicked.connect(self.someParamChanged)
         self.resultDefeat.setIcon(QtGui.QIcon('pictures/defeat_transparent.png'))
         self.resultDefeat.setIconSize(QtCore.QSize(100, 40))
+        self.resultDefeat.clicked.connect(lambda: toggle_selected(Result.Defeat))
 
         self.resultDraw.clicked.connect(lambda: self.game.resultChanged(Result.Draw))
         self.resultDraw.clicked.connect(self.someParamChanged)
         self.resultDraw.setIcon(QtGui.QIcon('pictures/draw_transparent.png'))
         self.resultDraw.setIconSize(QtCore.QSize(100, 40))
         self.resultDraw.setVisible(False)
+        self.resultDraw.clicked.connect(lambda: toggle_selected(Result.Draw))
+
+
+
 
         layout = QHBoxLayout()
         layout.addStretch()
@@ -802,6 +911,12 @@ class WidgetGallery(QMainWindow):
                     if pushMap.text() == game.mapPlayed:
                         pushMap.click()
                         break
+            elif game.gameMode == 'Flashpoint':
+                self.modeButtonFlashpoint.click()
+                for flashopintMap in self.radioFlashpointGroup.buttons():
+                    if flashopintMap.text() == game.mapPlayed:
+                        flashopintMap.click()
+                        break
 
             # Team
             if game.team == 'Comp':
@@ -833,6 +948,11 @@ class WidgetGallery(QMainWindow):
             self.missing_params.setText('All inputs are valid')
             self.submit.setDisabled(False)
 
+    def saveQueueChanged(self):
+        if self.check_button_save_queue.isChecked() and self.game.roleQueue is not None:
+            self.saveQueue = True
+        else:
+            self.saveQueue = False
 
 
     @staticmethod

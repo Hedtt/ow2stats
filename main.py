@@ -51,6 +51,4 @@ if __name__ == '__main__':
     app.setPalette(palette)
     gallery = WidgetGallery()
     gallery.show()
-    # doc = GDoc()
-    # game = doc.openLastGame()
     app.exec_()

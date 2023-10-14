@@ -12,6 +12,7 @@ class GameMode(Enum):
     Hybrid = 2
     Koth = 3
     Push = 4
+    Flashpoint = 5
 
 
 class Team(Enum):
@@ -55,8 +56,13 @@ class Map(Enum):
         Nepal = 4
         Oasis = 5
         Peninsula = 6
+        Samoa = 7
 
     class PushMap(Enum):
         Colosseo = 1
         Esperanca = 2
         NewQueenStreet = 3
+
+    class FlashpointMap(Enum):
+        NewJunkCity = 1
+        Suravasa = 2

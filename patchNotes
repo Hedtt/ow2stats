@@ -1,3 +1,18 @@
+0.0.9:
+    -added samoa
+
+0.0.8:
+    -added flashpoint mode and maps
+
+0.0.7:
+    -submitting now resets the color from the result
+    -changed window title to display version
+    -added save Queue option
+
+0.0.6:
+    -disabled auto-update
+    -selected result has now background color
+
 0.0.5:
     -fixed a crash regarding selecting circuit royal
 
